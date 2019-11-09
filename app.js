@@ -1,16 +1,29 @@
 // Instantiate Storage
 const storage = new Storage();
 
-// Get stored location data
-await storage.getLocationData();
-
-console.log(storage);
-
-// Instantiate Weather
-const weather = new Weather(storage.city, storage.state);
+ // Instantiate Weather
+ const weather = new Weather();
 
 // Instantiate UI
 const ui = new UI;
+ 
+defineFirstLocation()
+.then(data => {
+      setTimeout( () => { 
+      console.log(data)
+      }, 1000 );
+    })
+.catch(err => console.log(err));
+
+// Get stored location data
+ async function defineFirstLocation() { 
+    await storage.getLocationData()
+    setTimeout( () => { 
+        weather.city = storage.city
+        weather.country = storage.country
+        this.getWeather();
+      }, 1000 );
+}    
 
 //Get Weather on DOM Load
 document.addEventListener('DOMContentLoaded',getWeather);
@@ -36,10 +49,12 @@ document.getElementById('w-change-btn').addEventListener('click', (e) => {
 function getWeather(){
   weather.getWeather() 
     .then(results => {
-      ui.paint(results);
+        setTimeout( () => { 
+          ui.paint(results)
+      },1000)
     })
     .catch(err => console.log(err));
-}
+ }
 
 function convertKelvinToCelsius(kelvin) {
   if (kelvin < (0)) {

@@ -1,8 +1,10 @@
 class GeoLocator{
-  constructor(city,country) {
-    this.keyUser = 'AIzaSyCn83LgyeiP3K1hKrxdtSwmrtr35Nh7BAs';
-    this.city = city;
-    this.country = country;
+  constructor() {
+    this.keyUser = 'AIzaSyCSctkF0WEJoPTdWpZabV1Lmkuz5Z61Y6I';
+    this.city;
+    this.country;
+    this.lat;
+    this.long;
   }
 
   async getUserAddressBy(lat, long) {
@@ -17,11 +19,16 @@ class GeoLocator{
 
     }
 
-   getCurrentLocation(callback) {
-           navigator.geolocation.getCurrentPosition(position => {
-             //console.log(position);
-             return callback(position);
-  });
-}    
+  getCurrentLocation(callback) {
+        navigator.geolocation.getCurrentPosition(position => {
+            this.long = position.coords.longitude;
+            this.lat = position.coords.latitude;
+ 
+            callback();
+  },
+       function (error) {
+           console.log(`The Locator was denied. :( ${error}`)
+  });    
+}   
 
 }

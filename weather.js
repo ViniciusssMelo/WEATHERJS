@@ -1,8 +1,8 @@
 class Weather {
-  constructor(city, state) {
+  constructor() {
     this.client_key = "64f7f953368e3e84ff2d14f97ec552e4";
-    this.city = city;
-    this.state = state;
+    this.city;
+    this.state;
   }
 
   // Fetch weather from api

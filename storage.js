@@ -7,32 +7,31 @@ class Storage {
   } 
 
     async getLocationData() {
-
     //Instantiate Current Location
       const currentLocation = new GeoLocator();
-
-      currentLocation.getCurrentLocation(data => {
-      currentLocation.getUserAddressBy(data.coords.latitude, data.coords.longitude)
-          .then(data => {  
+      
+      currentLocation.getCurrentLocation(() => {
+      currentLocation.getUserAddressBy(currentLocation.lat, currentLocation.long)
+          .then(() => {
               if(localStorage.getItem('city') === null) {
-                  this.city = data.city;
+                  this.city = currentLocation.city;;
               } else {
                   this.city = localStorage.getItem('city');
               }
               if(localStorage.getItem('country') === null) {
-                  this.country = data.country;
+                  this.country = currentLocation.country;
               } else {
                   this.country = localStorage.getItem('country');
               }
               })
           .catch(error => console.log(error));
-           }); 
-
-      return {
-        city: this.city,
-        country: this.country
-      }
-    }
+          
+          return {
+            city: this.city,
+            country: this.country
+          }
+        })
+      }   
 
   setLocationData(city,state) {
     localStorage.setItem('city',city);
