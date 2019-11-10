@@ -14,7 +14,7 @@ class Storage {
       currentLocation.getUserAddressBy(currentLocation.lat, currentLocation.long)
           .then(() => {
               if(localStorage.getItem('city') === null) {
-                  this.city = currentLocation.city;;
+                  this.city = currentLocation.city;
               } else {
                   this.city = localStorage.getItem('city');
               }
@@ -33,11 +33,15 @@ class Storage {
         })
       }   
 
-  setLocationData(city,state) {
+  setLocationData(city,country) {
     localStorage.setItem('city',city);
-    localStorage.setItem('state',state);
+    localStorage.setItem('country',country);
+  }
+
+  removeLocation() {
+
+    // Remove from LS
+    localStorage.clear();
   }
 
 }
-
-

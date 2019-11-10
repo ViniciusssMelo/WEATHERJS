@@ -6,37 +6,51 @@ const storage = new Storage();
 
 // Instantiate UI
 const ui = new UI;
- 
-defineFirstLocation()
-.then(data => {
-      setTimeout( () => { 
-      console.log(data)
-      }, 1000 );
-    })
-.catch(err => console.log(err));
+
 
 // Get stored location data
- async function defineFirstLocation() { 
+async function defineFirstLocation() { 
     await storage.getLocationData()
     setTimeout( () => { 
         weather.city = storage.city
         weather.country = storage.country
-        this.getWeather();
-      }, 1000 );
+      }, 500 );
 }    
 
 //Get Weather on DOM Load
-document.addEventListener('DOMContentLoaded',getWeather);
+document.addEventListener('DOMContentLoaded',defineFirstLocation()
+.then(() => {
+      setTimeout( () => { 
+          this.getWeather() 
+      }, 500 );
+    })
+.catch(err => console.log(err)));
+
+//Getting the Current Location
+document.getElementById('w-get-location').addEventListener('click', (e) => {
+
+  // Cleaning the Storage Location to Get the Current Location
+  storage.removeLocation();
+
+  //Getting the Current Location
+  defineFirstLocation()
+    .then(() => {
+      setTimeout( () => { 
+        this.getWeather() 
+      }, 500 );
+    })
+  .catch(err => console.log(err));  
+})
 
 //Changing the Location
 document.getElementById('w-change-btn').addEventListener('click', (e) => {
   city = document.getElementById('city').value;
-  state = document.getElementById('state').value;
+  country = document.getElementById('country').value;
 
-  weather.changeLocation(city,state)
+  weather.changeLocation(city,country)
   
   // Save Location on LS
-  storage.setLocationData(city,state);
+  storage.setLocationData(city,country);
   
   // Get and Display weather
   this.getWeather();
@@ -49,9 +63,9 @@ document.getElementById('w-change-btn').addEventListener('click', (e) => {
 function getWeather(){
   weather.getWeather() 
     .then(results => {
-        setTimeout( () => { 
+        //setTimeout( () => { 
           ui.paint(results)
-      },1000)
+      //},1000)
     })
     .catch(err => console.log(err));
  }
